@@ -74,10 +74,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const resetPassword = async (email: string) => {
+    return AuthService.resetPassword(email);
+  };
+
   const resendConfirmation = async (email: string) => {
     return await AuthService.resendConfirmation(email);
-  };
-    return AuthService.resetPassword(email);
   };
 
   const value = {
