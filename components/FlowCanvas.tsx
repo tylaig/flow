@@ -22,7 +22,7 @@ const edgeTypes = {
 const defaultEdgeOptions = {
   type: 'custom',
   animated: true,
-  style: { stroke: '#52525b', strokeWidth: 2 }
+  style: { stroke: '#FF6B2B', strokeWidth: 2 }
 };
 
 
@@ -36,7 +36,7 @@ interface FlowCanvasProps {
 
 const FlowCanvas: React.FC<FlowCanvasProps> = ({ nodes, edges, onNodesChange, onEdgesChange, onConnect }) => {
   return (
-    <div className="flex-grow bg-dark-bg h-full w-full transition-all duration-300" style={{ position: 'relative' }}>
+    <div className="flex-grow bg-gray-50 h-full w-full transition-all duration-300" style={{ position: 'relative' }}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -47,32 +47,39 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({ nodes, edges, onNodesChange, on
         edgeTypes={edgeTypes}
         defaultEdgeOptions={defaultEdgeOptions}
         fitView
-        className="typebot-flow"
+        className="modern-flow"
       >
-        <Controls />
+        <Controls className="modern-controls" />
         <MiniMap 
           nodeColor={n => {
             if (!n.data?.type) {
-                return '#3B82F6';
+                return '#FF6B2B';
             }
             switch (n.data.type) {
-              case 'Start': return '#22C55E';
+              case 'Start': return '#10B981';
               case 'Options':
               case 'List':
-              case 'Condition': return '#F97316';
+              case 'Condition': return '#E53935';
               case 'AICall': return '#8B5CF6';
-              default: return '#3B82F6';
+              default: return '#FF6B2B';
             }
           }}
           nodeStrokeWidth={3}
           pannable 
           zoomable
+          className="modern-minimap"
           style={{
-            backgroundColor: '#111827',
-            border: '1px solid #374151'
+            backgroundColor: '#FFFFFF',
+            border: '1px solid #E5E7EB',
+            borderRadius: '12px'
           }}
         />
-        <Background variant={BackgroundVariant.Dots} gap={24} size={1} color="#27272a" />
+        <Background 
+          variant={BackgroundVariant.Dots} 
+          gap={24} 
+          size={1} 
+          color="rgba(0,0,0,0.05)" 
+        />
       </ReactFlow>
     </div>
   );

@@ -343,11 +343,11 @@ const AppContent: React.FC = () => {
             <>
               {/* Botão para abrir sidebar */}
               <button
-                onClick={() => setIsSidebarOpen(true)}
-                className="fixed top-20 left-4 z-30 bg-purple-600 hover:bg-purple-700 text-white rounded-full p-3 shadow-lg transition-colors"
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className="fixed top-20 right-4 z-30 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white rounded-full p-4 shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-110 group"
                 title="Adicionar Bloco"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 group-hover:rotate-45 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
                 </svg>
               </button>
@@ -362,13 +362,19 @@ const AppContent: React.FC = () => {
               {/* Overlay para fechar sidebar */}
               {isSidebarOpen && (
                 <div 
-                  className="fixed inset-0 bg-black bg-opacity-50 z-20"
+                  className="fixed inset-0 bg-black bg-opacity-30 z-20 backdrop-blur-sm"
                   onClick={() => setIsSidebarOpen(false)}
                 />
               )}
               
-              <FlowCanvas nodes={nodes} edges={edges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} onConnect={onConnect} />
-              <div className="bg-gray-50 p-8 flex-shrink-0 flex items-center justify-center border-l border-gray-200">
+              <FlowCanvas 
+                nodes={nodes} 
+                edges={edges} 
+                onNodesChange={onNodesChange} 
+                onEdgesChange={onEdgesChange} 
+                onConnect={onConnect} 
+              />
+              <div className="bg-white p-8 flex-shrink-0 flex items-center justify-center border-l border-gray-200 shadow-lg">
                 <PhonePreview nodes={nodes} edges={edges} />
               </div>
             </>

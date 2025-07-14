@@ -11,10 +11,13 @@ interface SidebarProps {
 const SidebarButton: React.FC<{ icon: React.ReactNode; label: string; onClick: () => void; }> = ({ icon, label, onClick }) => (
   <button
     onClick={onClick}
-    className="flex items-center w-full p-3 space-x-3 text-sm text-dark-text-secondary hover:bg-brand-primary hover:text-white rounded-md transition-colors"
+    className="flex items-center w-full p-3 space-x-3 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-xl transition-all duration-300 hover:shadow-md hover:transform hover:scale-105 group"
+    style={{ margin: '8px 0' }}
   >
-    {icon}
-    <span>{label}</span>
+    <div className="group-hover:scale-110 transition-transform duration-300">
+      {icon}
+    </div>
+    <span className="font-medium">{label}</span>
   </button>
 );
 
@@ -41,38 +44,44 @@ const Sidebar: React.FC<SidebarProps> = ({ addNode, isOpen, onClose }) => {
   ];
   
   return (
-    <aside className={`fixed left-0 top-0 h-full w-80 bg-dark-surface border-r border-dark-border z-30 transform transition-transform duration-300 ease-in-out ${
-      isOpen ? 'translate-x-0' : '-translate-x-full'
-    } overflow-y-auto`}>
+    <aside className={`fixed right-0 top-0 h-full w-80 bg-white border-l border-gray-200 z-30 transform transition-all duration-500 ease-in-out ${
+      isOpen ? 'translate-x-0' : 'translate-x-full'
+    } overflow-y-auto shadow-2xl`}>
       {/* Header do sidebar */}
-      <div className="flex items-center justify-between p-4 border-b border-dark-border bg-dark-bg">
-        <h2 className="text-lg font-bold text-dark-text-primary">Adicionar Blocos</h2>
+      <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-gradient-to-r from-orange-500 to-red-500">
+        <h2 className="text-lg font-bold text-white">Adicionar Blocos</h2>
         <button
           onClick={onClose}
-          className="text-dark-text-tertiary hover:text-white transition-colors p-1"
+          className="text-white hover:text-gray-200 transition-colors p-2 hover:bg-white hover:bg-opacity-20 rounded-lg"
           title="Fechar menu"
         >
           <CloseIcon />
         </button>
       </div>
       
-      <div className="p-4">
-        <h3 className="text-md font-bold text-dark-text-primary mb-4">Blocos de Mensagem</h3>
-        <div className="space-y-2 mb-6">
+      <div className="p-6">
+        <h3 className="text-md font-bold text-gray-800 mb-4 flex items-center">
+          <div className="w-2 h-2 bg-orange-500 rounded-full mr-3"></div>
+          Blocos de Mensagem
+        </h3>
+        <div className="space-y-1 mb-8">
           {messageBlocks.map(({type, icon, label}) => (
             <SidebarButton key={type} icon={icon} label={label} onClick={() => addNode(type)} />
           ))}
         </div>
         
-        <h3 className="text-md font-bold text-dark-text-primary mb-4">Blocos de Lógica</h3>
-        <div className="space-y-2 mb-6">
+        <h3 className="text-md font-bold text-gray-800 mb-4 flex items-center">
+          <div className="w-2 h-2 bg-red-500 rounded-full mr-3"></div>
+          Blocos de Lógica
+        </h3>
+        <div className="space-y-1 mb-8">
           {logicBlocks.map(({type, icon, label}) => (
             <SidebarButton key={type} icon={icon} label={label} onClick={() => addNode(type)} />
           ))}
         </div>
         
-        <div className="p-3 bg-gray-900/50 rounded-md">
-          <p className="text-xs text-dark-text-tertiary">
+        <div className="p-4 bg-orange-50 rounded-xl border border-orange-200">
+          <p className="text-xs text-gray-600">
             💡 <strong>Dica:</strong> Clique em um bloco para adicioná-lo ao canvas. Depois, arraste as alças para conectar os blocos e criar seu fluxo.
           </p>
         </div>

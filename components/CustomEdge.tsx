@@ -13,7 +13,13 @@ export const CustomEdge: React.FC<EdgeProps> = ({ id, sourceX, sourceY, targetX,
         <>
             <path
                 id={id}
-                style={{ ...style, strokeDasharray: isHovered ? '5 5' : 'none' }}
+                style={{ 
+                    ...style, 
+                    strokeDasharray: isHovered ? '5 5' : 'none',
+                    stroke: isHovered ? '#E53935' : '#FF6B2B',
+                    strokeWidth: isHovered ? 3 : 2,
+                    filter: isHovered ? 'drop-shadow(0 2px 4px rgba(255, 107, 43, 0.3))' : 'none'
+                }}
                 className="react-flow__edge-path"
                 d={edgePath}
                 markerEnd={markerEnd}
@@ -42,7 +48,7 @@ export const CustomEdge: React.FC<EdgeProps> = ({ id, sourceX, sourceY, targetX,
                         onMouseLeave={() => setIsHovered(false)}
                     >
                         <button
-                            className="p-1 bg-red-600 text-white rounded-full hover:bg-red-700 transition-transform hover:scale-110 shadow-lg"
+                            className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-all duration-300 hover:scale-125 shadow-lg hover:shadow-xl"
                             onClick={() => deleteEdge(id)}
                             title="Excluir conexão"
                         >

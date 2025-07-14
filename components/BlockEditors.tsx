@@ -14,21 +14,21 @@ interface BlockEditorProps<T extends ChatBlock> {
 }
 
 const BlockWrapper: React.FC<{ title: string; children: React.ReactNode; onDelete: () => void; onDuplicate: () => void; isStart?: boolean }> = ({ title, children, onDelete, onDuplicate, isStart }) => (
-  <div className={`bg-dark-surface rounded-lg border shadow-lg w-[380px] ${isStart ? 'border-green-500' : 'border-dark-border'}`}>
-    <div className="flex justify-between items-center p-3 border-b border-dark-border bg-gray-800/50 rounded-t-lg">
-      <h3 className="font-bold text-dark-text-primary text-sm">{title}</h3>
+  <div className={`bg-white rounded-xl border-2 shadow-lg w-[380px] transition-all duration-300 hover:shadow-xl hover:scale-105 ${isStart ? 'border-green-400 shadow-green-100' : 'border-gray-200 hover:border-orange-300'}`}>
+    <div className={`flex justify-between items-center p-4 border-b border-gray-200 rounded-t-xl ${isStart ? 'bg-gradient-to-r from-green-400 to-emerald-500' : 'bg-gradient-to-r from-orange-500 to-red-500'}`}>
+      <h3 className="font-bold text-white text-sm">{title}</h3>
       {!isStart && (
         <div className="flex items-center space-x-2">
-            <button onClick={onDuplicate} className="text-dark-text-tertiary hover:text-blue-400 transition-colors" title="Duplicar Bloco">
+            <button onClick={onDuplicate} className="text-white hover:text-gray-200 transition-colors p-1 hover:bg-white hover:bg-opacity-20 rounded-lg" title="Duplicar Bloco">
                 <DuplicateIcon />
             </button>
-            <button onClick={onDelete} className="text-dark-text-tertiary hover:text-red-500 transition-colors" title="Excluir Bloco">
+            <button onClick={onDelete} className="text-white hover:text-gray-200 transition-colors p-1 hover:bg-white hover:bg-opacity-20 rounded-lg" title="Excluir Bloco">
                 <TrashIcon />
             </button>
         </div>
       )}
     </div>
-    <div className="p-4 space-y-4">
+    <div className="p-6 space-y-4">
       {children}
     </div>
   </div>
@@ -36,25 +36,25 @@ const BlockWrapper: React.FC<{ title: string; children: React.ReactNode; onDelet
 
 const InputField: React.FC<{label: string, value: string | number, onChange: (e: React.ChangeEvent<HTMLInputElement>) => void, placeholder?: string, type?: string}> = ({label, value, onChange, placeholder, type = 'text'}) => (
     <div>
-        <label className="block text-sm font-medium text-dark-text-tertiary mb-1">{label}</label>
+        <label className="block text-sm font-semibold text-gray-700 mb-2">{label}</label>
         <input
             type={type}
             value={value}
             onChange={onChange}
             placeholder={placeholder}
-            className="w-full p-2 bg-gray-900 border border-dark-border rounded-md text-dark-text-secondary focus:ring-2 focus:ring-brand-primary focus:outline-none transition"
+            className="form-input"
         />
     </div>
 );
 
 const TextareaField: React.FC<{label: string, value: string, onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void, placeholder?: string, rows?: number}> = ({label, value, onChange, placeholder, rows = 3}) => (
     <div>
-        <label className="block text-sm font-medium text-dark-text-tertiary mb-1">{label}</label>
+        <label className="block text-sm font-semibold text-gray-700 mb-2">{label}</label>
         <textarea
             value={value}
             onChange={onChange}
             placeholder={placeholder}
-            className="w-full p-2 bg-gray-900 border border-dark-border rounded-md text-dark-text-secondary focus:ring-2 focus:ring-brand-primary focus:outline-none transition resize-none"
+            className="form-textarea"
             rows={rows}
         />
     </div>

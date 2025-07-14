@@ -15,23 +15,25 @@ import { useFlowContext } from '../FlowContext';
 
 
 const handleStyle = { 
-    width: 12, 
-    height: 12,
-    background: '#9CA3AF',
-    border: '2px solid #1F2937',
+    width: 8, 
+    height: 8,
+    background: '#FF6B2B',
+    border: '2px solid #FFFFFF',
     zIndex: 10,
+    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
 };
 
 const GroupNode: React.FC<NodeProps<GroupBlock>> = ({ data, id }) => {
     const { updateNode, deleteNode, duplicateNode } = useFlowContext();
     return (
-        <div className="bg-gray-500/10 border-2 border-dashed border-gray-500 rounded-xl shadow-lg nowheel">
-            <Handle type="target" position={Position.Top} style={{opacity: 0}} />
-            <div className="p-2 bg-gray-800/50 rounded-t-lg">
+        <div className="bg-orange-50 border-2 border-dashed border-orange-300 rounded-xl shadow-lg nowheel transition-all duration-300 hover:shadow-xl">
+            <Handle type="target" position={Position.Top} style={{...handleStyle, opacity: 0}} />
+            <div className="p-3 bg-gradient-to-r from-orange-400 to-red-400 rounded-t-xl">
                 <input 
                     value={data.label}
                     onChange={(e) => updateNode(id, {...data, label: e.target.value})}
-                    className="bg-transparent text-white font-bold text-sm w-full focus:outline-none focus:ring-1 focus:ring-blue-500 rounded px-1"
+                    className="bg-transparent text-white font-bold text-sm w-full focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 rounded-lg px-2 py-1"
                 />
             </div>
             {/* Child nodes will be rendered here by React Flow */}
