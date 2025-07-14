@@ -1,0 +1,5 @@
+{
+  "name": "Typebot WhatsApp Pro",
+  "description": "Uma plataforma baseada no Typebot, integrada nativamente com a API Oficial do WhatsApp Business, permitindo a criação de chatbots visuais com suporte avançado a botões interativos e automações inteligentes.",
+  "requestFramePermissions": []
+}
