@@ -36,7 +36,7 @@ interface FlowCanvasProps {
 
 const FlowCanvas: React.FC<FlowCanvasProps> = ({ nodes, edges, onNodesChange, onEdgesChange, onConnect }) => {
   return (
-    <div className="flex-grow bg-dark-bg h-full w-full" style={{ position: 'relative' }}>
+    <div className="flex-grow bg-dark-bg h-full w-full transition-all duration-300" style={{ position: 'relative' }}>
       <ReactFlow
         nodes={nodes}
         edges={edges}

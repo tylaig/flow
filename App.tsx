@@ -37,6 +37,7 @@ const App: React.FC = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [view, setView] = useState<'builder' | 'analytics'>('builder');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isTestModalOpen, setIsTestModalOpen] = useState(false);
   const [isWidgetModalOpen, setIsWidgetModalOpen] = useState(false);
 
@@ -100,6 +101,7 @@ const App: React.FC = () => {
         data = { id, type, label: 'Novo Grupo' };
         newNode = { id, type, position: { x, y }, data, style: { width: 500, height: 400, backgroundColor: 'rgba(107, 114, 128, 0.1)' } };
         setNodes((nds) => nds.concat(newNode));
+        setIsSidebarOpen(false); // Fecha o sidebar após adicionar um bloco
         return;
       default:
         return;
@@ -107,6 +109,7 @@ const App: React.FC = () => {
 
     newNode = { id, type, position: { x, y }, data };
     setNodes((nds) => nds.concat(newNode));
+    setIsSidebarOpen(false); // Fecha o sidebar após adicionar um bloco
   }, [setNodes]);
 
   const deleteNode = useCallback((id: string) => {
@@ -196,7 +199,32 @@ const App: React.FC = () => {
         <main className="flex flex-grow overflow-hidden">
           {view === 'builder' ? (
             <>
-              <Sidebar addNode={addNode} />
+              {/* Botão para abrir sidebar */}
+              <button
+                onClick={() => setIsSidebarOpen(true)}
+                className="fixed top-20 left-4 z-30 bg-brand-primary hover:bg-brand-secondary text-white rounded-full p-3 shadow-lg transition-colors"
+                title="Adicionar Bloco"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+              </button>
+              
+              {/* Sidebar retrátil */}
+              <Sidebar 
+                addNode={addNode} 
+                isOpen={isSidebarOpen} 
+                onClose={() => setIsSidebarOpen(false)} 
+              />
+              
+              {/* Overlay para fechar sidebar */}
+              {isSidebarOpen && (
+                <div 
+                  className="fixed inset-0 bg-black bg-opacity-50 z-20"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
+              )}
+              
               <FlowCanvas nodes={nodes} edges={edges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} onConnect={onConnect} />
               <div className="bg-dark-bg p-8 flex-shrink-0 flex items-center justify-center border-l border-dark-border">
                 <PhonePreview nodes={nodes} edges={edges} />
