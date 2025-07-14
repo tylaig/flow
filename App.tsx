@@ -7,7 +7,7 @@ import FlowList from './components/flows/FlowList';
 import CreateFlowModal from './components/flows/CreateFlowModal';
 import { FlowService, FlowWithPermissions } from './services/flowService';
 import Sidebar from './components/Sidebar';
-import FlowCanvas from './components/FlowCanvas';
+import OptimizedFlowCanvas from './components/OptimizedFlowCanvas';
 import PhonePreview from './components/PhonePreview';
 import Header from './components/Header';
 import AnalyticsDashboard from './components/AnalyticsDashboard';
@@ -367,7 +367,7 @@ const AppContent: React.FC = () => {
                 />
               )}
               
-              <FlowCanvas 
+              <OptimizedFlowCanvas 
                 nodes={nodes} 
                 edges={edges} 
                 onNodesChange={onNodesChange} 
