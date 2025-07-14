@@ -104,4 +104,16 @@ export class AuthService {
 
     return { error };
   }
+
+  /**
+   * Reenviar email de confirmação
+   */
+  static async resendConfirmation(email: string): Promise<{ error: any }> {
+    const { error } = await supabase.auth.resend({
+      type: 'signup',
+      email,
+    });
+
+    return { error };
+  }
 }

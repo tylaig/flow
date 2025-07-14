@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from './AuthProvider';
+import { AlertCircle, Eye, EyeOff } from 'lucide-react';
 
 interface LoginFormProps {
   onSuccess?: () => void;
@@ -12,9 +13,22 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onToggleMode }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showResetPassword, setShowResetPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const { signIn, resetPassword } = useAuth();
 
+  const getErrorMessage = (error: any) => {
+    if (error?.message?.includes('Invalid login credentials')) {
+      return 'Email ou senha incorretos. Verifique suas credenciais e tente novamente.';
+    }
+    if (error?.message?.includes('Email not confirmed')) {
+      return 'Email não confirmado. Verifique sua caixa de entrada e clique no link de confirmação.';
+    }
+    if (error?.message?.includes('Too many requests')) {
+      return 'Muitas tentativas de login. Aguarde alguns minutos antes de tentar novamente.';
+    }
+    return error?.message || 'Erro desconhecido. Tente novamente.';
+  };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -23,7 +37,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onToggleMode }) => {
     const { error } = await signIn(email, password);
 
     if (error) {
-      setError(error.message);
+      setError(getErrorMessage(error));
     } else {
       onSuccess?.();
     }
@@ -39,7 +53,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onToggleMode }) => {
     const { error } = await resetPassword(email);
 
     if (error) {
-      setError(error.message);
+      setError(getErrorMessage(error));
     } else {
       setError('');
       alert('Email de recuperação enviado! Verifique sua caixa de entrada.');
@@ -127,20 +141,48 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onToggleMode }) => {
             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
               Senha
             </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              placeholder="••••••••"
-            />
+            <div className="relative">
+              <input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                placeholder="••••••••"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+              >
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </button>
+            </div>
           </div>
 
           {error && (
-            <div className="text-red-600 text-sm bg-red-50 p-3 rounded-md">
-              {error}
+            <div className="bg-red-50 border border-red-200 rounded-md p-3">
+              <div className="flex items-start">
+                <AlertCircle className="h-4 w-4 text-red-500 mt-0.5 mr-2 flex-shrink-0" />
+                <div className="text-red-700 text-sm">
+                  {error}
+                  {error.includes('Email ou senha incorretos') && (
+                    <div className="mt-2 text-xs text-red-600">
+                      <p>Dicas:</p>
+                      <ul className="list-disc list-inside mt-1 space-y-1">
+                        <li>Verifique se o email está correto</li>
+                        <li>Certifique-se de que a senha está correta</li>
+                        <li>Confirme se você já criou uma conta</li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           )}
 
