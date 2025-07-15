@@ -238,6 +238,43 @@ export class FlowService {
   }
 
   /**
+   * Atualizar conteúdo de um bloco específico
+   */
+  static async updateBlockContent(
+    flowId: string,
+    blockId: string,
+    content: string
+  ): Promise<{ data: Flow | null; error: any }> {
+    // Primeiro, obter o fluxo atual
+    const { data: flow, error: fetchError } = await this.getFlowById(flowId);
+    
+    if (fetchError || !flow) {
+      return { data: null, error: fetchError };
+    }
+
+    // Atualizar o bloco específico nos dados do fluxo
+    const flowData = flow.data as { nodes: CustomNode[]; edges: Edge[] };
+    const updatedNodes = flowData.nodes.map(node => {
+      if (node.id === blockId) {
+        return {
+          ...node,
+          data: {
+            ...node.data,
+            content: content
+          }
+        };
+      }
+      return node;
+    });
+
+    // Salvar os dados atualizados
+    return this.saveFlowData(flowId, {
+      nodes: updatedNodes,
+      edges: flowData.edges
+    });
+  }
+
+  /**
    * Exportar fluxo em formato JSON
    */
   static async exportFlow(id: string): Promise<{ data: any | null; error: any }> {

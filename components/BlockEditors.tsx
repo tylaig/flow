@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import InlineTextEditor from './InlineTextEditor';
+import { useEditingContext } from '../contexts/EditingContext';
 import { 
     TextBlock, ImageBlock, OptionsButtonBlock, ListButtonBlock, AICallBlock, ConditionBlock, 
     ChatBlock, BlockOption, AudioBlock, VideoBlock, DocumentBlock, LocationBlock, TemplateBlock,
@@ -61,17 +63,28 @@ const TextareaField: React.FC<{label: string, value: string, onChange: (e: React
 );
 
 
-export const TextBlockEditor: React.FC<BlockEditorProps<TextBlock>> = ({ block, updateBlock, deleteBlock, duplicateBlock }) => (
-  <BlockWrapper title="Mensagem de Texto" onDelete={deleteBlock} onDuplicate={duplicateBlock}>
-    <TextareaField 
-        label=""
-        value={block.content}
-        onChange={(e) => updateBlock({ ...block, content: e.target.value })}
-        placeholder="Digite sua mensagem aqui... Use {{variavel}} para inserir valores salvos."
-        rows={4}
-    />
-  </BlockWrapper>
-);
+export const TextBlockEditor: React.FC<BlockEditorProps<TextBlock>> = ({ block, updateBlock, deleteBlock, duplicateBlock }) => {
+  const { currentEditingBlock } = useEditingContext();
+  
+  return (
+    <BlockWrapper title="Mensagem de Texto" onDelete={deleteBlock} onDuplicate={duplicateBlock}>
+      <div className="space-y-2">
+        <label className="block text-sm font-semibold text-gray-700">Conteúdo da Mensagem</label>
+        <InlineTextEditor
+          blockId={block.id}
+          content={block.content}
+          flowId={null} // TODO: Passar o flowId real aqui
+          onUpdate={(content) => updateBlock({ ...block, content })}
+          placeholder="Digite sua mensagem aqui... Use {{variavel}} para inserir valores salvos."
+          multiline={true}
+        />
+        <p className="text-xs text-gray-500 mt-2">
+          💡 Clique no texto acima para editar. Use variáveis como {{nome}} para personalizar.
+        </p>
+      </div>
+    </BlockWrapper>
+  );
+};
 
 export const ImageBlockEditor: React.FC<BlockEditorProps<ImageBlock>> = ({ block, updateBlock, deleteBlock, duplicateBlock }) => (
   <BlockWrapper title="Mensagem de Imagem" onDelete={deleteBlock} onDuplicate={duplicateBlock}>
@@ -133,6 +146,8 @@ const OptionEditor: React.FC<{ option: BlockOption; onUpdate: (option: BlockOpti
 
 
 export const OptionsButtonBlockEditor: React.FC<BlockEditorProps<OptionsButtonBlock>> = ({ block, updateBlock, deleteBlock, duplicateBlock }) => {
+    const { currentEditingBlock } = useEditingContext();
+    
     const handleAddOption = () => {
         if (block.options.length < 3) {
             const newOption: BlockOption = { id: `opt-${Date.now()}`, label: 'Nova Opção' };
@@ -152,13 +167,17 @@ export const OptionsButtonBlockEditor: React.FC<BlockEditorProps<OptionsButtonBl
     
     return (
         <BlockWrapper title="Botões de Opção (Máx. 3)" onDelete={deleteBlock} onDuplicate={duplicateBlock}>
-            <TextareaField
-                label=""
-                value={block.message}
-                onChange={(e) => updateBlock({ ...block, message: e.target.value })}
-                placeholder="Qual é a sua pergunta?"
-                rows={3}
-            />
+            <div className="space-y-2">
+                <label className="block text-sm font-semibold text-gray-700">Mensagem da Pergunta</label>
+                <InlineTextEditor
+                    blockId={`${block.id}-message`}
+                    content={block.message}
+                    flowId={null} // TODO: Passar o flowId real aqui
+                    onUpdate={(message) => updateBlock({ ...block, message })}
+                    placeholder="Qual é a sua pergunta?"
+                    multiline={true}
+                />
+            </div>
             <div className="space-y-2">
                 <label className="block text-sm font-semibold text-gray-700 mb-2">Botões (cada um é uma saída)</label>
                 {block.options.map(option => (
@@ -176,6 +195,8 @@ export const OptionsButtonBlockEditor: React.FC<BlockEditorProps<OptionsButtonBl
 };
 
 export const ListButtonBlockEditor: React.FC<BlockEditorProps<ListButtonBlock>> = ({ block, updateBlock, deleteBlock, duplicateBlock }) => {
+    const { currentEditingBlock } = useEditingContext();
+    
     const handleAddOption = () => {
         const newOption: BlockOption = { id: `opt-${Date.now()}`, label: `Item ${block.options.length + 1}` };
         updateBlock({ ...block, options: [...block.options, newOption] });
@@ -193,13 +214,17 @@ export const ListButtonBlockEditor: React.FC<BlockEditorProps<ListButtonBlock>> 
 
     return (
         <BlockWrapper title="Botão de Lista" onDelete={deleteBlock} onDuplicate={duplicateBlock}>
-            <TextareaField
-                label=""
-                value={block.message}
-                onChange={(e) => updateBlock({ ...block, message: e.target.value })}
-                placeholder="Escolha uma das opções abaixo."
-                rows={2}
-            />
+            <div className="space-y-2">
+                <label className="block text-sm font-semibold text-gray-700">Mensagem</label>
+                <InlineTextEditor
+                    blockId={`${block.id}-message`}
+                    content={block.message}
+                    flowId={null} // TODO: Passar o flowId real aqui
+                    onUpdate={(message) => updateBlock({ ...block, message })}
+                    placeholder="Escolha uma das opções abaixo."
+                    multiline={false}
+                />
+            </div>
             <InputField label="Texto do Botão de Menu" value={block.buttonText} onChange={(e) => updateBlock({ ...block, buttonText: e.target.value })} placeholder="Ver Opções" />
             <div className="space-y-2">
                 <label className="block text-sm font-semibold text-gray-700 mb-2">Itens da Lista (cada um é uma saída)</label>
@@ -217,12 +242,17 @@ export const ListButtonBlockEditor: React.FC<BlockEditorProps<ListButtonBlock>> 
 
 export const SaveResponseBlockEditor: React.FC<BlockEditorProps<SaveResponseBlock>> = ({ block, updateBlock, deleteBlock, duplicateBlock }) => (
     <BlockWrapper title="Salvar Resposta do Usuário" onDelete={deleteBlock} onDuplicate={duplicateBlock}>
-        <TextareaField
-            label="Mensagem de Solicitação"
-            value={block.message}
-            onChange={(e) => updateBlock({ ...block, message: e.target.value })}
-            placeholder="Ex: Por favor, digite seu nome completo."
-        />
+        <div className="space-y-2">
+            <label className="block text-sm font-semibold text-gray-700">Mensagem de Solicitação</label>
+            <InlineTextEditor
+                blockId={`${block.id}-message`}
+                content={block.message}
+                flowId={null} // TODO: Passar o flowId real aqui
+                onUpdate={(message) => updateBlock({ ...block, message })}
+                placeholder="Ex: Por favor, digite seu nome completo."
+                multiline={true}
+            />
+        </div>
         <InputField label="Salvar resposta na variável" value={block.variableToSave} onChange={e => updateBlock({ ...block, variableToSave: e.target.value })} placeholder="Ex: nome_completo" />
         <p className="text-xs text-gray-600 mt-2 p-2 bg-blue-50 rounded border-l-4 border-blue-400">💡 O bot aguardará a próxima mensagem do usuário e a salvará na variável especificada.</p>
     </BlockWrapper>
@@ -262,6 +292,7 @@ export const ConditionBlockEditor: React.FC<BlockEditorProps<ConditionBlock>> = 
 export const AICallBlockEditor: React.FC<BlockEditorProps<AICallBlock>> = ({ block, updateBlock, deleteBlock, duplicateBlock }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [testResponse, setTestResponse] = useState('');
+    const { currentEditingBlock } = useEditingContext();
 
     const handleTest = async () => {
         setIsLoading(true);
@@ -274,13 +305,17 @@ export const AICallBlockEditor: React.FC<BlockEditorProps<AICallBlock>> = ({ blo
 
     return (
         <BlockWrapper title="Chamada de IA (Gemini)" onDelete={deleteBlock} onDuplicate={duplicateBlock}>
-            <TextareaField
-                label="Prompt para a IA"
-                value={block.prompt}
-                onChange={(e) => updateBlock({ ...block, prompt: e.target.value })}
-                placeholder="Ex: Resuma o seguinte texto para uma criança de 5 anos: {{variavel_anterior}}"
-                rows={4}
-            />
+            <div className="space-y-2">
+                <label className="block text-sm font-semibold text-gray-700">Prompt para a IA</label>
+                <InlineTextEditor
+                    blockId={`${block.id}-prompt`}
+                    content={block.prompt}
+                    flowId={null} // TODO: Passar o flowId real aqui
+                    onUpdate={(prompt) => updateBlock({ ...block, prompt })}
+                    placeholder="Ex: Resuma o seguinte texto para uma criança de 5 anos: {{variavel_anterior}}"
+                    multiline={true}
+                />
+            </div>
             <InputField label="Salvar resposta na variável" value={block.variableToSave} onChange={e => updateBlock({...block, variableToSave: e.target.value})} placeholder="Ex: resumo_ia" />
             <button
                 onClick={handleTest}

@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { addEdge, useNodesState, useEdgesState, Connection, Edge, Node } from 'reactflow';
 import { AuthProvider, useAuth } from './components/auth/AuthProvider';
+import { EditingProvider } from './contexts/EditingContext';
 import LoginForm from './components/auth/LoginForm';
 import SignUpForm from './components/auth/SignUpForm';
 import FlowList from './components/flows/FlowList';
@@ -396,9 +397,11 @@ const AppContent: React.FC = () => {
 const App: React.FC = () => {
   return (
     <AuthProvider>
-      <FlowContext.Provider value={flowContextValue}>
-        <AppContent />
-      </FlowContext.Provider>
+      <EditingProvider>
+        <FlowContext.Provider value={flowContextValue}>
+          <AppContent />
+        </FlowContext.Provider>
+      </EditingProvider>
     </AuthProvider>
   );
 };
