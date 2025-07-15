@@ -16,6 +16,7 @@ import { useFlowContext } from '../FlowContext';
 // Extend NodeProps to include flowId
 interface CustomNodeProps<T = any> extends NodeProps<T> {
   flowId?: string | null;
+  flowId: string | null;
 }
 
 const handleStyle = { 
@@ -44,9 +45,9 @@ const GroupNode: React.FC<CustomNodeProps<GroupBlock>> = ({ data, id, flowId }) 
     );
 };
 
-const CustomNode: React.FC<CustomNodeProps<ChatBlock>> = ({ data, id, flowId }) => {
+export const DelayBlockEditor: React.FC<BlockEditorProps<DelayBlock>> = ({ block, updateBlock, deleteBlock, duplicateBlock, flowId }) => (
   const { type } = data;
-  const { updateNode, deleteNode, duplicateNode } = useFlowContext();
+export const TextBlockEditor: React.FC<BlockEditorProps<TextBlock>> = ({ block, updateBlock, deleteBlock, duplicateBlock, flowId }) => {
   const isStart = type === BlockType.Start;
   
   const renderEditor = () => {
@@ -147,7 +148,7 @@ const CustomNode: React.FC<CustomNodeProps<ChatBlock>> = ({ data, id, flowId }) 
   );
 };
 
-export const nodeTypes = {
+export const ImageBlockEditor: React.FC<BlockEditorProps<ImageBlock>> = ({ block, updateBlock, deleteBlock, duplicateBlock, flowId }) => (
   [BlockType.Start]: memo(CustomNode),
   [BlockType.Text]: memo(CustomNode),
   [BlockType.Image]: memo(CustomNode),
