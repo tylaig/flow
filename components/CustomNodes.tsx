@@ -13,6 +13,10 @@ import {
 } from './BlockEditors';
 import { useFlowContext } from '../FlowContext';
 
+// Extend NodeProps to include flowId
+interface CustomNodeProps<T = any> extends NodeProps<T> {
+  flowId?: string | null;
+}
 
 const handleStyle = { 
     width: 16, 
@@ -23,7 +27,7 @@ const handleStyle = {
     zIndex: 10,
 };
 
-const GroupNode: React.FC<NodeProps<GroupBlock>> = ({ data, id }) => {
+const GroupNode: React.FC<CustomNodeProps<GroupBlock>> = ({ data, id, flowId }) => {
     const { updateNode, deleteNode, duplicateNode } = useFlowContext();
     return (
         <div className="bg-purple-50/80 border-3 border-dashed border-purple-400 rounded-2xl shadow-xl nowheel backdrop-blur-sm">
@@ -40,7 +44,7 @@ const GroupNode: React.FC<NodeProps<GroupBlock>> = ({ data, id }) => {
     );
 };
 
-const CustomNode: React.FC<NodeProps<ChatBlock>> = ({ data, id }) => {
+const CustomNode: React.FC<CustomNodeProps<ChatBlock>> = ({ data, id, flowId }) => {
   const { type } = data;
   const { updateNode, deleteNode, duplicateNode } = useFlowContext();
   const isStart = type === BlockType.Start;
@@ -55,35 +59,35 @@ const CustomNode: React.FC<NodeProps<ChatBlock>> = ({ data, id }) => {
       case BlockType.Start:
         return <StartBlockEditor />;
       case BlockType.Text:
-        return <TextBlockEditor block={data as TextBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} />;
+        return <TextBlockEditor block={data as TextBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} flowId={flowId} />;
       case BlockType.Image:
-        return <ImageBlockEditor block={data as ImageBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} />;
+        return <ImageBlockEditor block={data as ImageBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} flowId={flowId} />;
       case BlockType.Audio:
-        return <AudioBlockEditor block={data as AudioBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} />;
+        return <AudioBlockEditor block={data as AudioBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} flowId={flowId} />;
       case BlockType.Video:
-        return <VideoBlockEditor block={data as VideoBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} />;
+        return <VideoBlockEditor block={data as VideoBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} flowId={flowId} />;
       case BlockType.Document:
-        return <DocumentBlockEditor block={data as DocumentBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} />;
+        return <DocumentBlockEditor block={data as DocumentBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} flowId={flowId} />;
       case BlockType.Location:
-        return <LocationBlockEditor block={data as LocationBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} />;
+        return <LocationBlockEditor block={data as LocationBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} flowId={flowId} />;
       case BlockType.Template:
-        return <TemplateBlockEditor block={data as TemplateBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} />;
+        return <TemplateBlockEditor block={data as TemplateBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} flowId={flowId} />;
       case BlockType.Options:
-        return <OptionsButtonBlockEditor block={data as OptionsButtonBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} />;
+        return <OptionsButtonBlockEditor block={data as OptionsButtonBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} flowId={flowId} />;
       case BlockType.List:
-        return <ListButtonBlockEditor block={data as ListButtonBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} />;
+        return <ListButtonBlockEditor block={data as ListButtonBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} flowId={flowId} />;
       case BlockType.SaveResponse:
-        return <SaveResponseBlockEditor block={data as SaveResponseBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} />;
+        return <SaveResponseBlockEditor block={data as SaveResponseBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} flowId={flowId} />;
       case BlockType.AICall:
-        return <AICallBlockEditor block={data as AICallBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} />;
+        return <AICallBlockEditor block={data as AICallBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} flowId={flowId} />;
       case BlockType.Condition:
-        return <ConditionBlockEditor block={data as ConditionBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} />;
+        return <ConditionBlockEditor block={data as ConditionBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} flowId={flowId} />;
       case BlockType.Delay:
-        return <DelayBlockEditor block={data as DelayBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} />;
+        return <DelayBlockEditor block={data as DelayBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} flowId={flowId} />;
       case BlockType.Integration:
-        return <IntegrationBlockEditor block={data as IntegrationBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} />;
+        return <IntegrationBlockEditor block={data as IntegrationBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} flowId={flowId} />;
       case BlockType.Group:
-          return <GroupBlockEditor block={data as GroupBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock}/>
+          return <GroupBlockEditor block={data as GroupBlock} updateBlock={updateBlock} deleteBlock={deleteBlock} duplicateBlock={duplicateBlock} flowId={flowId} />
       default:
         return <div>Tipo de bloco desconhecido</div>;
     }
