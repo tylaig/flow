@@ -22,7 +22,7 @@ const edgeTypes = {
 const defaultEdgeOptions = {
   type: 'custom',
   animated: true,
-  style: { stroke: '#52525b', strokeWidth: 2 }
+  style: { stroke: '#8B5CF6', strokeWidth: 3 }
 };
 
 
@@ -36,7 +36,7 @@ interface FlowCanvasProps {
 
 const FlowCanvas: React.FC<FlowCanvasProps> = ({ nodes, edges, onNodesChange, onEdgesChange, onConnect }) => {
   return (
-    <div className="flex-grow bg-dark-bg h-full w-full transition-all duration-300" style={{ position: 'relative' }}>
+    <div className="flex-grow bg-gradient-to-br from-slate-50 to-slate-100 h-full w-full transition-all duration-300" style={{ position: 'relative' }}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -53,26 +53,27 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({ nodes, edges, onNodesChange, on
         <MiniMap 
           nodeColor={n => {
             if (!n.data?.type) {
-                return '#3B82F6';
+                return '#8B5CF6';
             }
             switch (n.data.type) {
-              case 'Start': return '#22C55E';
+              case 'Start': return '#10B981';
               case 'Options':
               case 'List':
-              case 'Condition': return '#F97316';
-              case 'AICall': return '#8B5CF6';
-              default: return '#3B82F6';
+              case 'Condition': return '#F59E0B';
+              case 'AICall': return '#A855F7';
+              default: return '#8B5CF6';
             }
           }}
-          nodeStrokeWidth={3}
+          nodeStrokeWidth={2}
           pannable 
           zoomable
           style={{
-            backgroundColor: '#111827',
-            border: '1px solid #374151'
+            backgroundColor: '#F8FAFC',
+            border: '2px solid #E2E8F0',
+            borderRadius: '8px'
           }}
         />
-        <Background variant={BackgroundVariant.Dots} gap={24} size={1} color="#27272a" />
+        <Background variant={BackgroundVariant.Dots} gap={20} size={1.5} color="#CBD5E1" />
       </ReactFlow>
     </div>
   );

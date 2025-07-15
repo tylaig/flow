@@ -15,23 +15,24 @@ import { useFlowContext } from '../FlowContext';
 
 
 const handleStyle = { 
-    width: 12, 
-    height: 12,
-    background: '#9CA3AF',
-    border: '2px solid #1F2937',
+    width: 16, 
+    height: 16,
+    background: '#8B5CF6',
+    border: '3px solid #FFFFFF',
+    boxShadow: '0 2px 8px rgba(139, 92, 246, 0.3)',
     zIndex: 10,
 };
 
 const GroupNode: React.FC<NodeProps<GroupBlock>> = ({ data, id }) => {
     const { updateNode, deleteNode, duplicateNode } = useFlowContext();
     return (
-        <div className="bg-gray-500/10 border-2 border-dashed border-gray-500 rounded-xl shadow-lg nowheel">
-            <Handle type="target" position={Position.Top} style={{opacity: 0}} />
-            <div className="p-2 bg-gray-800/50 rounded-t-lg">
+        <div className="bg-purple-50/80 border-3 border-dashed border-purple-400 rounded-2xl shadow-xl nowheel backdrop-blur-sm">
+            <Handle type="target" position={Position.Top} style={{...handleStyle, opacity: 0}} />
+            <div className="p-3 bg-purple-600/90 rounded-t-2xl">
                 <input 
                     value={data.label}
                     onChange={(e) => updateNode(id, {...data, label: e.target.value})}
-                    className="bg-transparent text-white font-bold text-sm w-full focus:outline-none focus:ring-1 focus:ring-blue-500 rounded px-1"
+                    className="bg-transparent text-white font-bold text-base w-full focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1"
                 />
             </div>
             {/* Child nodes will be rendered here by React Flow */}
@@ -92,43 +93,43 @@ const CustomNode: React.FC<NodeProps<ChatBlock>> = ({ data, id }) => {
     switch(type) {
         case BlockType.Options: {
             const block = data as OptionsButtonBlock;
-            const baseTop = 168; 
-            const optionHeight = 48;
+            const baseTop = 180; 
+            const optionHeight = 52;
             return block.options.map((option, index) => (
                 <Handle
                     key={option.id}
                     type="source"
                     position={Position.Right}
                     id={option.id}
-                    style={{ ...handleStyle, top: `${baseTop + index * optionHeight}px` }}
+                    style={{ ...handleStyle, top: `${baseTop + index * optionHeight}px`, background: '#F97316' }}
                 />
             ));
         }
         case BlockType.List: {
              const block = data as ListButtonBlock;
-             const baseTop = 202;
-             const optionHeight = 48;
+             const baseTop = 220;
+             const optionHeight = 52;
              return block.options.map((option, index) => (
                 <Handle
                     key={option.id}
                     type="source"
                     position={Position.Right}
                     id={option.id}
-                    style={{ ...handleStyle, top: `${baseTop + index * optionHeight}px` }}
+                    style={{ ...handleStyle, top: `${baseTop + index * optionHeight}px`, background: '#F97316' }}
                 />
             ));
         }
         case BlockType.Condition:
             return <>
-                <Handle type="source" position={Position.Right} id="then" style={{ ...handleStyle, top: '120px' }}>
-                     <div className="absolute -left-12 -translate-y-1/2 text-xs text-green-400 bg-dark-surface px-2 py-0.5 rounded border border-dark-border">Então</div>
+                <Handle type="source" position={Position.Right} id="then" style={{ ...handleStyle, top: '140px', background: '#22C55E' }}>
+                     <div className="absolute -left-14 -translate-y-1/2 text-xs text-white bg-green-500 px-2 py-1 rounded-md font-medium shadow-lg">Então</div>
                 </Handle>
-                <Handle type="source" position={Position.Right} id="else" style={{ ...handleStyle, top: '170px' }}>
-                    <div className="absolute -left-12 -translate-y-1/2 text-xs text-red-400 bg-dark-surface px-2 py-0.5 rounded border border-dark-border">Senão</div>
+                <Handle type="source" position={Position.Right} id="else" style={{ ...handleStyle, top: '190px', background: '#EF4444' }}>
+                    <div className="absolute -left-14 -translate-y-1/2 text-xs text-white bg-red-500 px-2 py-1 rounded-md font-medium shadow-lg">Senão</div>
                 </Handle>
             </>;
         case BlockType.Start:
-             return <Handle type="source" position={Position.Bottom} style={handleStyle} />;
+             return <Handle type="source" position={Position.Bottom} style={{...handleStyle, background: '#22C55E'}} />;
         default:
             return <Handle type="source" position={Position.Right} style={handleStyle} />;
     }
@@ -136,7 +137,7 @@ const CustomNode: React.FC<NodeProps<ChatBlock>> = ({ data, id }) => {
 
   return (
     <div>
-      {!isStart && type !== BlockType.Group && <Handle type="target" position={Position.Top} id="a" style={handleStyle} />}
+      {!isStart && type !== BlockType.Group && <Handle type="target" position={Position.Top} id="a" style={{...handleStyle, background: '#6B7280'}} />}
       {renderEditor()}
       {renderSourceHandles()}
     </div>

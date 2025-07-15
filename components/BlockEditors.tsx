@@ -14,21 +14,21 @@ interface BlockEditorProps<T extends ChatBlock> {
 }
 
 const BlockWrapper: React.FC<{ title: string; children: React.ReactNode; onDelete: () => void; onDuplicate: () => void; isStart?: boolean }> = ({ title, children, onDelete, onDuplicate, isStart }) => (
-  <div className={`bg-dark-surface rounded-lg border shadow-lg w-[380px] ${isStart ? 'border-green-500' : 'border-dark-border'}`}>
-    <div className="flex justify-between items-center p-3 border-b border-dark-border bg-gray-800/50 rounded-t-lg">
-      <h3 className="font-bold text-dark-text-primary text-sm">{title}</h3>
+  <div className={`bg-white rounded-xl border-2 shadow-xl w-[420px] ${isStart ? 'border-green-500 bg-green-50' : 'border-gray-300 hover:border-purple-400'} transition-all duration-200`}>
+    <div className={`flex justify-between items-center p-4 border-b-2 rounded-t-xl ${isStart ? 'bg-green-500 border-green-600' : 'bg-purple-600 border-purple-700'}`}>
+      <h3 className="font-bold text-white text-base">{title}</h3>
       {!isStart && (
         <div className="flex items-center space-x-2">
             <button onClick={onDuplicate} className="text-dark-text-tertiary hover:text-blue-400 transition-colors" title="Duplicar Bloco">
-                <DuplicateIcon />
+                <div className="p-1 hover:bg-white/20 rounded"><DuplicateIcon /></div>
             </button>
             <button onClick={onDelete} className="text-dark-text-tertiary hover:text-red-500 transition-colors" title="Excluir Bloco">
-                <TrashIcon />
+                <div className="p-1 hover:bg-white/20 rounded"><TrashIcon /></div>
             </button>
         </div>
       )}
     </div>
-    <div className="p-4 space-y-4">
+    <div className="p-5 space-y-4">
       {children}
     </div>
   </div>
@@ -36,25 +36,25 @@ const BlockWrapper: React.FC<{ title: string; children: React.ReactNode; onDelet
 
 const InputField: React.FC<{label: string, value: string | number, onChange: (e: React.ChangeEvent<HTMLInputElement>) => void, placeholder?: string, type?: string}> = ({label, value, onChange, placeholder, type = 'text'}) => (
     <div>
-        <label className="block text-sm font-medium text-dark-text-tertiary mb-1">{label}</label>
+        <label className="block text-sm font-semibold text-gray-700 mb-2">{label}</label>
         <input
             type={type}
             value={value}
             onChange={onChange}
             placeholder={placeholder}
-            className="w-full p-2 bg-gray-900 border border-dark-border rounded-md text-dark-text-secondary focus:ring-2 focus:ring-brand-primary focus:outline-none transition"
+            className="w-full p-3 bg-white border-2 border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition-all duration-200"
         />
     </div>
 );
 
 const TextareaField: React.FC<{label: string, value: string, onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void, placeholder?: string, rows?: number}> = ({label, value, onChange, placeholder, rows = 3}) => (
     <div>
-        <label className="block text-sm font-medium text-dark-text-tertiary mb-1">{label}</label>
+        <label className="block text-sm font-semibold text-gray-700 mb-2">{label}</label>
         <textarea
             value={value}
             onChange={onChange}
             placeholder={placeholder}
-            className="w-full p-2 bg-gray-900 border border-dark-border rounded-md text-dark-text-secondary focus:ring-2 focus:ring-brand-primary focus:outline-none transition resize-none"
+            className="w-full p-3 bg-white border-2 border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition-all duration-200 resize-none"
             rows={rows}
         />
     </div>
@@ -116,16 +116,16 @@ export const TemplateBlockEditor: React.FC<BlockEditorProps<TemplateBlock>> = ({
 );
 
 const OptionEditor: React.FC<{ option: BlockOption; onUpdate: (option: BlockOption) => void; onDelete: () => void; }> = ({ option, onUpdate, onDelete }) => (
-    <div className="flex items-center space-x-2">
+    <div className="flex items-center space-x-3 p-2 bg-gray-50 rounded-lg border border-gray-200">
         <input
             type="text"
             value={option.label}
             onChange={(e) => onUpdate({ ...option, label: e.target.value })}
             placeholder="Texto do botão"
             maxLength={20}
-            className="flex-grow p-2 bg-gray-900 border border-dark-border rounded-md text-dark-text-secondary focus:ring-2 focus:ring-brand-primary focus:outline-none transition"
+            className="flex-grow p-2 bg-white border border-gray-300 rounded-md text-gray-900 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition-all duration-200"
         />
-        <button onClick={onDelete} className="text-dark-text-tertiary hover:text-red-500 p-1 rounded-full bg-gray-700 hover:bg-gray-600">
+        <button onClick={onDelete} className="text-gray-500 hover:text-red-500 p-2 rounded-full bg-white hover:bg-red-50 border border-gray-300 hover:border-red-300 transition-all duration-200">
             <TrashIcon />
         </button>
     </div>
@@ -160,13 +160,13 @@ export const OptionsButtonBlockEditor: React.FC<BlockEditorProps<OptionsButtonBl
                 rows={3}
             />
             <div className="space-y-2">
-                <label className="block text-sm font-medium text-dark-text-tertiary">Botões (cada um é uma saída)</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Botões (cada um é uma saída)</label>
                 {block.options.map(option => (
                     <OptionEditor key={option.id} option={option} onUpdate={handleUpdateOption} onDelete={() => handleDeleteOption(option.id)} />
                 ))}
             </div>
             {block.options.length < 3 && (
-                <button onClick={handleAddOption} className="w-full flex items-center justify-center space-x-2 p-2 mt-2 text-sm bg-brand-primary hover:bg-brand-secondary text-white rounded-md transition-colors">
+                <button onClick={handleAddOption} className="w-full flex items-center justify-center space-x-2 p-3 mt-3 text-sm bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-all duration-200 font-medium">
                     <PlusIcon />
                     <span>Adicionar Opção</span>
                 </button>
@@ -202,12 +202,12 @@ export const ListButtonBlockEditor: React.FC<BlockEditorProps<ListButtonBlock>> 
             />
             <InputField label="Texto do Botão de Menu" value={block.buttonText} onChange={(e) => updateBlock({ ...block, buttonText: e.target.value })} placeholder="Ver Opções" />
             <div className="space-y-2">
-                <label className="block text-sm font-medium text-dark-text-tertiary">Itens da Lista (cada um é uma saída)</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Itens da Lista (cada um é uma saída)</label>
                  {block.options.map(option => (
                     <OptionEditor key={option.id} option={option} onUpdate={handleUpdateOption} onDelete={() => handleDeleteOption(option.id)} />
                 ))}
             </div>
-            <button onClick={handleAddOption} className="w-full flex items-center justify-center space-x-2 p-2 mt-2 text-sm bg-brand-primary hover:bg-brand-secondary text-white rounded-md transition-colors">
+            <button onClick={handleAddOption} className="w-full flex items-center justify-center space-x-2 p-3 mt-3 text-sm bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-all duration-200 font-medium">
                  <PlusIcon />
                  <span>Adicionar Item</span>
             </button>
@@ -224,7 +224,7 @@ export const SaveResponseBlockEditor: React.FC<BlockEditorProps<SaveResponseBloc
             placeholder="Ex: Por favor, digite seu nome completo."
         />
         <InputField label="Salvar resposta na variável" value={block.variableToSave} onChange={e => updateBlock({ ...block, variableToSave: e.target.value })} placeholder="Ex: nome_completo" />
-        <p className="text-xs text-dark-text-tertiary mt-2">O bot aguardará a próxima mensagem do usuário e a salvará na variável especificada.</p>
+        <p className="text-xs text-gray-600 mt-2 p-2 bg-blue-50 rounded border-l-4 border-blue-400">💡 O bot aguardará a próxima mensagem do usuário e a salvará na variável especificada.</p>
     </BlockWrapper>
 );
 
@@ -238,12 +238,13 @@ export const ConditionBlockEditor: React.FC<BlockEditorProps<ConditionBlock>> = 
     return (
         <BlockWrapper title="Condição (Se/Então)" onDelete={deleteBlock} onDuplicate={duplicateBlock}>
             <div className="space-y-2 bg-gray-900 p-3 rounded-md border border-dark-border">
-                 <p className="text-sm font-semibold text-dark-text-secondary">Se a variável</p>
+        <div className="space-y-3 bg-gray-50 p-4 rounded-lg border-2 border-gray-200">
+                 <p className="text-sm font-semibold text-gray-700">Se a variável</p>
                 <InputField label="" value={clause.variable} onChange={(e) => handleClauseChange('variable', e.target.value)} placeholder="ex: resposta_usuario" />
                 <select
                     value={clause.operator}
                     onChange={(e) => handleClauseChange('operator', e.target.value)}
-                    className="w-full p-2 bg-gray-800 border border-dark-border rounded-md text-dark-text-secondary focus:ring-2 focus:ring-brand-primary focus:outline-none transition"
+                    className="w-full p-3 bg-white border-2 border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition-all duration-200"
                 >
                     <option value="equals">for igual a</option>
                     <option value="not_equals">for diferente de</option>
@@ -251,8 +252,8 @@ export const ConditionBlockEditor: React.FC<BlockEditorProps<ConditionBlock>> = 
                 </select>
                 <InputField label="" value={clause.value} onChange={(e) => handleClauseChange('value', e.target.value)} placeholder="ex: 'Sim'" />
             </div>
-             <div className="text-center text-dark-text-tertiary">
-                <p className="text-xs">Conecte as saídas "Então" e "Senão" aos próximos blocos.</p>
+             <div className="text-center">
+                <p className="text-xs text-gray-600 p-2 bg-yellow-50 rounded border-l-4 border-yellow-400">⚡ Conecte as saídas "Então" e "Senão" aos próximos blocos.</p>
             </div>
         </BlockWrapper>
     );
@@ -285,14 +286,14 @@ export const AICallBlockEditor: React.FC<BlockEditorProps<AICallBlock>> = ({ blo
             <button
                 onClick={handleTest}
                 disabled={isLoading}
-                className="w-full p-2 mt-2 text-sm bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors disabled:bg-gray-500"
+                className="w-full p-3 mt-3 text-sm bg-green-600 hover:bg-green-700 text-white rounded-lg transition-all duration-200 disabled:bg-gray-400 font-medium"
             >
                 {isLoading ? 'Testando...' : 'Testar Chamada de IA'}
             </button>
             {testResponse && (
-                <div className="mt-4 p-3 bg-gray-900 rounded-md border border-dark-border">
-                    <p className="text-sm font-bold text-dark-text-secondary">Resposta do Teste:</p>
-                    <p className="text-xs text-dark-text-tertiary mt-1">{testResponse}</p>
+                <div className="mt-4 p-4 bg-green-50 rounded-lg border-2 border-green-200">
+                    <p className="text-sm font-bold text-green-800">Resposta do Teste:</p>
+                    <p className="text-xs text-green-700 mt-2">{testResponse}</p>
                 </div>
             )}
         </BlockWrapper>
@@ -308,7 +309,7 @@ export const DelayBlockEditor: React.FC<BlockEditorProps<DelayBlock>> = ({ block
             type="number"
             placeholder="Ex: 3"
         />
-         <p className="text-xs text-dark-text-tertiary mt-2">Pausa o fluxo pelo tempo especificado para tornar a conversa mais natural.</p>
+         <p className="text-xs text-gray-600 mt-2 p-2 bg-blue-50 rounded border-l-4 border-blue-400">⏱️ Pausa o fluxo pelo tempo especificado para tornar a conversa mais natural.</p>
     </BlockWrapper>
 );
 
@@ -316,11 +317,11 @@ export const IntegrationBlockEditor: React.FC<BlockEditorProps<IntegrationBlock>
     <BlockWrapper title="Integração (Requisição HTTP)" onDelete={deleteBlock} onDuplicate={duplicateBlock}>
         <InputField label="URL" value={block.url} onChange={e => updateBlock({ ...block, url: e.target.value })} placeholder="https://api.exemplo.com/dados" />
         <div>
-            <label className="block text-sm font-medium text-dark-text-tertiary mb-1">Método</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Método</label>
             <select
                 value={block.method}
                 onChange={(e) => updateBlock({ ...block, method: e.target.value as IntegrationBlock['method'] })}
-                className="w-full p-2 bg-gray-900 border border-dark-border rounded-md text-dark-text-secondary focus:ring-2 focus:ring-brand-primary focus:outline-none transition"
+                className="w-full p-3 bg-white border-2 border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition-all duration-200"
             >
                 <option value="GET">GET</option>
                 <option value="POST">POST</option>
@@ -361,7 +362,11 @@ export const GroupBlockEditor: React.FC<BlockEditorProps<GroupBlock>> = ({ block
 export const StartBlockEditor: React.FC<{}> = () => (
      <BlockWrapper title="Início do Fluxo" onDelete={()=>{}} onDuplicate={()=>{}} isStart={true}>
         <div className="text-center">
-            <p className="text-sm text-dark-text-tertiary mt-1">Este é o ponto de partida da sua conversa. Arraste uma conexão a partir daqui.</p>
+            <div className="p-4 bg-green-100 rounded-lg border-2 border-green-300">
+                <div className="text-4xl mb-2">🚀</div>
+                <p className="text-sm text-green-800 font-medium">Este é o ponto de partida da sua conversa.</p>
+                <p className="text-xs text-green-700 mt-1">Arraste uma conexão a partir daqui para começar seu fluxo.</p>
+            </div>
         </div>
     </BlockWrapper>
 );
