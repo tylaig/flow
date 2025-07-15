@@ -328,6 +328,7 @@ const AppContent: React.FC = () => {
   };
 
   return (
+    <FlowContext.Provider value={flowContextValue}>
       <div className="h-screen w-screen flex flex-col bg-white text-gray-900">
         <Header 
           currentFlow={currentFlow}
@@ -391,6 +392,7 @@ const AppContent: React.FC = () => {
             />
         )}
       </div>
+    </FlowContext.Provider>
   );
 };
 
@@ -398,9 +400,7 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <EditingProvider>
-        <FlowContext.Provider value={flowContextValue}>
           <AppContent />
-        </FlowContext.Provider>
       </EditingProvider>
     </AuthProvider>
   );
