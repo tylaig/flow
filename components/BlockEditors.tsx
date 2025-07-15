@@ -237,8 +237,7 @@ export const ConditionBlockEditor: React.FC<BlockEditorProps<ConditionBlock>> = 
 
     return (
         <BlockWrapper title="Condição (Se/Então)" onDelete={deleteBlock} onDuplicate={duplicateBlock}>
-            <div className="space-y-2 bg-gray-900 p-3 rounded-md border border-dark-border">
-        <div className="space-y-3 bg-gray-50 p-4 rounded-lg border-2 border-gray-200">
+            <div className="space-y-3 bg-gray-50 p-4 rounded-lg border-2 border-gray-200">
                  <p className="text-sm font-semibold text-gray-700">Se a variável</p>
                 <InputField label="" value={clause.variable} onChange={(e) => handleClauseChange('variable', e.target.value)} placeholder="ex: resposta_usuario" />
                 <select
@@ -252,7 +251,7 @@ export const ConditionBlockEditor: React.FC<BlockEditorProps<ConditionBlock>> = 
                 </select>
                 <InputField label="" value={clause.value} onChange={(e) => handleClauseChange('value', e.target.value)} placeholder="ex: 'Sim'" />
             </div>
-             <div className="text-center">
+            <div className="text-center">
                 <p className="text-xs text-gray-600 p-2 bg-yellow-50 rounded border-l-4 border-yellow-400">⚡ Conecte as saídas "Então" e "Senão" aos próximos blocos.</p>
             </div>
         </BlockWrapper>
