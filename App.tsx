@@ -358,7 +358,8 @@ const AppContent: React.FC = () => {
               <Sidebar 
                 addNode={addNode} 
                 isOpen={isSidebarOpen} 
-                onClose={() => setIsSidebarOpen(false)} 
+                onConnect={onConnect}
+                flowId={currentFlow?.id || null}
               />
               
               {/* Overlay para fechar sidebar */}

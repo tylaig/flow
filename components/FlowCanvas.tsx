@@ -26,15 +26,16 @@ const defaultEdgeOptions = {
 };
 
 
-interface FlowCanvasProps {
+export interface FlowCanvasProps {
   nodes: Node[];
   edges: Edge[];
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
+  flowId: string | null;
 }
 
-const FlowCanvas: React.FC<FlowCanvasProps> = ({ nodes, edges, onNodesChange, onEdgesChange, onConnect }) => {
+const FlowCanvas: React.FC<FlowCanvasProps> = ({ nodes, edges, onNodesChange, onEdgesChange, onConnect, flowId }) => {
   return (
     <div className="flex-grow bg-gradient-to-br from-slate-50 to-slate-100 h-full w-full transition-all duration-300" style={{ position: 'relative' }}>
       <ReactFlow
@@ -45,6 +46,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({ nodes, edges, onNodesChange, on
         onConnect={onConnect}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
+        flowId={flowId}
         defaultEdgeOptions={defaultEdgeOptions}
         fitView
         className="typebot-flow"
