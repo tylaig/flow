@@ -396,7 +396,7 @@ const AppContent: React.FC = () => {
 const App: React.FC = () => {
   return (
     <AuthProvider>
-      <FlowContext.Provider value={{}}>
+      <FlowContext.Provider value={flowContextValue}>
         <AppContent />
       </FlowContext.Provider>
     </AuthProvider>
